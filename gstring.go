@@ -7,13 +7,31 @@ import (
 	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
-func GbkToUtf8(s []byte) ([]byte, error) {
+func GbkToUtf8b(s []byte) ([]byte, error) {
 	reader := transform.NewReader(bytes.NewReader(s), simplifiedchinese.GBK.NewDecoder())
 	d, e := ioutil.ReadAll(reader)
 	if e != nil {
 		return nil, e
 	}
 	return d, nil
+}
+
+func Utf8ToGbkb(s string) (string, error) {
+	reader := transform.NewReader(bytes.NewReader([]byte(s)), simplifiedchinese.GBK.NewEncoder())
+	b, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
+}
+
+func GbkToUtf8(s string) (string,error) {
+	reader := transform.NewReader(bytes.NewReader([]byte(s)), simplifiedchinese.GBK.NewDecoder())
+	b, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return "",err
+	}
+	return string(b), nil
 }
 
 func Utf8ToGbk(s []byte) ([]byte, error) {
